@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Calculadora de Ciclo Menstrual</title>
+  <style>
+    :root {
+      --primary: #e91e63;
+      --primary-light: #f8bbd0;
+      --accent-fertile: #4caf50;
+      --accent-ovulation: #ff9800;
+      --accent-pms: #9c27b0;
+      --bg: #fdf2f5;
+      --card-bg: #ffffff;
+      --text: #333333;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background-color: var(--bg);
+      color: var(--text);
+      display: flex;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .container {
+      width: 100%;
+      max-width: 600px;
+      background: var(--card-bg);
+      padding: 25px;
+      border-radius: 16px;
+      box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: var(--primary);
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .form-group {
+      margin-bottom: 15px;
+    }
+
+    label {
+      display: block;
+      font-weight: 600;
+      margin-bottom: 5px;
+      font-size: 0.9rem;
+    }
+
+    input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      font-size: 1rem;
+    }
+
+    input:focus {
+      outline: none;
+      border-color: var(--primary);
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      background-color: var(--primary);
+      color: white;
+      border: none;
+      border-radius: 8px;
+      font-size: 1rem;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background-color: #d81b60;
+    }
+
+    .results {
+      margin-top: 25px;
+      display: grid;
+      gap: 12px;
+    }
+
+    .card {
+      padding: 12px 15px;
+      border-radius: 8px;
+      background-color: #f9f9f9;
+      border-left: 5px solid var(--primary);
+    }
+
+    .card.fertile { border-left-color: var(--accent-fertile); background: #f1f8e9; }
+    .card.ovulation { border-left-color: var(--accent-ovulation); background: #fff8e1; }
+    .card.pms { border-left-color: var(--accent-pms); background: #f3e5f5; }
+
+    .card h3 {
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      color: #666;
+      margin-bottom: 4px;
+    }
+
+    .card p {
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .disclaimer {
+      margin-top: 20px;
+      font-size: 0.75rem;
+      color: #777;
+      text-align: center;
+      line-height: 1.4;
+    }
+
+    @media (min-width: 480px) {
+      .input-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="container">
+    <h1>Calculadora de Ciclo Menstrual</h1>
+
+    <div class="form-group">
+      <label for="dataInicio">Início da Última Menstruação</label>
+      <input type="date" id="dataInicio">
+    </div>
+
+    <div class="input-grid">
+      <div class="form-group">
+        <label for="duracaoCiclo">Duração do Ciclo (dias)</label>
+        <input type="number" id="duracaoCiclo" value="28" min="20" max="45">
+      </div>
+
+      <div class="form-group">
+        <label for="duracaoSangramento">Duração da Menstruação (dias)</label>
+        <input type="number" id="duracaoSangramento" value="5" min="2" max="10">
+      </div>
+    </div>
+
+    <button onclick="calcularEExibir()">Calcular Ciclo</button>
+
+    <div class="results" id="resultados"></div>
+
+    <p class="disclaimer">
+      <strong>Nota:</strong> Este programa fornece apenas estimativas biológicas. Não utilize a previsão de dias de menor risco como método contraceptivo definitivo.Toma nota que foi feito por Levítico O Varão, suptivel a erros.
+    </p>
+  </div>
+
+  <script>
+    // Define a data de hoje como valor padrão no campo de data
+    document.getElementById('dataInicio').valueAsDate = new Date();
+
+    function formatarDataBR(dataStr) {
+      const [ano, mes, dia] = dataStr.split('-');
+      return `${dia}/${mes}/${ano}`;
+    }
+
+    function addDays(date, days) {
+      const result = new Date(date);
+      result.setDate(result.getDate() + days);
+      return result;
+    }
+
+    function formatDate(date) {
+      return date.toISOString().split('T')[0];
+    }
+
+    function calcularEExibir() {
+      const dataInicioVal = document.getElementById('dataInicio').value;
+      const duracaoCiclo = parseInt(document.getElementById('duracaoCiclo').value);
+      const duracaoSangramento = parseInt(document.getElementById('duracaoSangramento').value);
+
+      if (!dataInicioVal) {
+        alert("Por favor, selecione uma data inicial.");
+        return;
+      }
+
+      // Processamento das datas
+      const [ano, mes, dia] = dataInicioVal.split('-').map(Number);
+      const inicio = new Date(ano, mes - 1, dia);
+
+      const fimSangramento = addDays(inicio, duracaoSangramento - 1);
+      const proximaMenstruacao = addDays(inicio, duracaoCiclo);
+      const diaOvulacao = addDays(proximaMenstruacao, -14);
+      const inicioJanelaFertil = addDays(diaOvulacao, -5);
+      const fimJanelaFertil = addDays(diaOvulacao, 1);
+      const inicioPreMenstrual = addDays(proximaMenstruacao, -7);
+
+      // Renderização do HTML
+      const containerResultados = document.getElementById('resultados');
+      containerResultados.innerHTML = `
+        <div class="card">
+          <h3>Fim do Sangramento</h3>
+          <p>${formatarDataBR(formatDate(fimSangramento))}</p>
+        </div>
+
+        <div class="card fertile">
+          <h3>Janela Fértil</h3>
+          <p>${formatarDataBR(formatDate(inicioJanelaFertil))} até ${formatarDataBR(formatDate(fimJanelaFertil))}</p>
+        </div>
+
+        <div class="card ovulation">
+          <h3>Dia Estimado da Ovulação</h3>
+          <p>${formatarDataBR(formatDate(diaOvulacao))}</p>
+        </div>
+
+        <div class="card pms">
+          <h3>Fase Pré-Menstrual (TPM)</h3>
+          <p>${formatarDataBR(formatDate(inicioPreMenstrual))} até ${formatarDataBR(formatDate(addDays(proximaMenstruacao, -1)))}</p>
+        </div>
+
+        <div class="card">
+          <h3>Início da Próxima Menstruação</h3>
+          <p>${formatarDataBR(formatDate(proximaMenstruacao))}</p>
+        </div>
+      `;
+    }
+
+    // Executa a primeira vez ao carregar
+    calcularEExibir();
+  </script>
+</body>
+</html>
