@@ -162,12 +162,15 @@
     <div class="results" id="resultados"></div>
 
     <p class="disclaimer">
-      <strong>Nota:</strong> Este programa fornece apenas estimativas biológicas. Não utilize a previsão de dias de menor risco como método contraceptivo definitivo.Toma nota que foi feito por Levítico O Varão, suptivel a erros.
+      <strong>Nota:</strong> Este programa fornece apenas estimativas biológicas. Não utilize a previsão de dias de menor risco como método contraceptivo definitivo.Toma nota que foi feito por Levítico O Varão, suscetível a erros.
     </p>
+    <footer>
+      <small>Versão 1.0.1</small>
+    </footer>
   </div>
 
   <script>
-    // Define a data de hoje como valor padrão no campo de data
+
     document.getElementById('dataInicio').valueAsDate = new Date();
 
     function formatarDataBR(dataStr) {
@@ -195,7 +198,7 @@
         return;
       }
 
-      // Processamento das datas
+      
       const [ano, mes, dia] = dataInicioVal.split('-').map(Number);
       const inicio = new Date(ano, mes - 1, dia);
 
@@ -206,7 +209,7 @@
       const fimJanelaFertil = addDays(diaOvulacao, 1);
       const inicioPreMenstrual = addDays(proximaMenstruacao, -7);
 
-      // Renderização do HTML
+      
       const containerResultados = document.getElementById('resultados');
       containerResultados.innerHTML = `
         <div class="card">
@@ -236,7 +239,7 @@
       `;
     }
 
-    // Executa a primeira vez ao carregar
+    
     calcularEExibir();
   </script>
 </body>
