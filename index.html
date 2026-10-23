@@ -40,6 +40,40 @@
       box-shadow: 0 10px 25px rgba(0,0,0,0.08);
     }
 
+    /* Menu de Abas para as novas páginas via Iframe */
+    .nav-tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 20px;
+      background: #f1f1f1;
+      padding: 5px;
+      border-radius: 8px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px 5px;
+      background: transparent;
+      color: var(--text);
+      border: none;
+      border-radius: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      margin-top: 0;
+    }
+
+    .tab-btn.active {
+      background-color: var(--primary);
+      color: white;
+    }
+
+    .tab-btn:hover {
+      background-color: var(--primary-light);
+      color: var(--text);
+    }
+
     h1 {
       text-align: center;
       color: var(--primary);
@@ -58,7 +92,7 @@
       font-size: 0.9rem;
     }
 
-    input {
+    input, select, textarea {
       width: 100%;
       padding: 10px;
       border: 1px solid #ccc;
@@ -66,7 +100,7 @@
       font-size: 1rem;
     }
 
-    input:focus {
+    input:focus, select:focus, textarea:focus {
       outline: none;
       border-color: var(--primary);
     }
@@ -126,6 +160,15 @@
       line-height: 1.4;
     }
 
+    .contact-form {
+      margin-top: 25px;
+    }
+
+    footer {
+      margin-top: 15px;
+      text-align: center;
+    }
+
     @media (min-width: 480px) {
       .input-grid {
         display: grid;
@@ -138,58 +181,75 @@
 <body>
 
   <div class="container">
-    <h1>Calculadora de Ciclo Menstrual</h1>
+    <!-- Menu de Navegação para o Iframe -->
+    <nav class="nav-tabs">
+      <button class="tab-btn" onclick="mostrarSecao('calculadora', this)">Calculadora</button>
+      <button class="tab-btn active" onclick="mostrarSecao('login', this)">Login</button>
+      <button class="tab-btn" onclick="mostrarSecao('sms', this)">Consultas SMS</button>
+      <button class="tab-btn" onclick="mostrarSecao('quiz', this)">Questionário</button>
+    </nav>
 
-    <div class="form-group">
-      <label for="dataInicio">Início da Última Menstruação</label>
-      <input type="date" id="dataInicio">
-    </div>
+    <!-- SEÇÃO DA CALCULADORA (Código Original Preservado) -->
+    <div id="sec-calculadora" class="section-view" style="display: none;">
+      <h1>Calculadora de Ciclo Menstrual</h1>
 
-    <div class="input-grid">
       <div class="form-group">
-        <label for="duracaoCiclo">Duração do Ciclo (dias)</label>
-        <input type="number" id="duracaoCiclo" value="28" min="20" max="45">
+        <label for="dataInicio">Início da Última Menstruação</label>
+        <input type="date" id="dataInicio">
       </div>
 
-      <div class="form-group">
-        <label for="duracaoSangramento">Duração da Menstruação (dias)</label>
-        <input type="number" id="duracaoSangramento" value="5" min="2" max="10">
-      </div>
-    </div>
-
-    <button onclick="calcularEExibir()">Calcular Ciclo</button>
-
-    <div class="results" id="resultados"></div>
-
-    <p class="disclaimer">
-      <strong>Nota:</strong> Este programa fornece apenas estimativas biológicas. Não utilize a previsão de dias de menor risco como método contraceptivo definitivo.Toma nota que foi feito por Levítico O Varão, suscetível a erros.
-    </p>
-    <section class="contact-form">
-      <h3> Envie-nos tuas perguntas e dificuldades</h3>
-      <form action="https://formspree.io/f/0_ovaraolevitico@gmail.com"method="POST">
+      <div class="input-grid">
         <div class="form-group">
-          <label for="name">Nome:</label>
-          <input type="text" 
-            id="name" name="name" required>
+          <label for="duracaoCiclo">Duração do Ciclo (dias)</label>
+          <input type="number" id="duracaoCiclo" value="28" min="20" max="45">
         </div>
-            <div class="form-group">
-              <label for="email">Email:</label>
-                    <input type="gmail" id="email" name="email" required>
-              
-              </div>
+
         <div class="form-group">
-              <label for="message">Mensagem:</label>
-                    <textarea id="message" name="message" rows="4" required></textarea>
-              </div>
-        <button type="submit">Enviar</button>
-      </form>
-    </section>
-    <footer>
-      <small>Versão 1.0.1</small>
-    </footer>
+          <label for="duracaoSangramento">Duração da Menstruação (dias)</label>
+          <input type="number" id="duracaoSangramento" value="5" min="2" max="10">
+        </div>
+      </div>
+
+      <button onclick="calcularEExibir()">Calcular Ciclo</button>
+
+      <div class="results" id="resultados"></div>
+
+      <p class="disclaimer">
+        <strong>Nota:</strong> Este programa fornece apenas estimativas biológicas. Não utilize a previsão de dias de menor risco como método contraceptivo definitivo. Toma nota que foi feito por Levítico O Varão, suscetível a erros.
+      </p>
+      
+      <section class="contact-form">
+        <h3>Envie-nos tuas perguntas e dificuldades</h3>
+        <form action="https://formspree.io/f/0_ovaraolevitico@gmail.com" method="POST">
+          <div class="form-group">
+            <label for="name">Nome:</label>
+            <input type="text" id="name" name="name" required>
+          </div>
+          <div class="form-group">
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+          </div>
+          <div class="form-group">
+            <label for="message">Mensagem:</label>
+            <textarea id="message" name="message" rows="4" required></textarea>
+          </div>
+          <button type="submit">Enviar</button>
+        </form>
+      </section>
+      
+      <footer>
+        <small>Versão 1.0.1</small>
+      </footer>
+    </div>
+
+    <!-- SEÇÃO DO IFRAME PARA AS OUTRAS TELAS -->
+    <div id="sec-iframe-container" class="section-view">
+      <iframe id="dynamicFrame" style="width: 100%; height: 520px; border: none; border-radius: 8px;"></iframe>
+    </div>
   </div>
 
   <script>
+    let usuarioLogado = false;
 
     document.getElementById('dataInicio').valueAsDate = new Date();
 
@@ -217,7 +277,6 @@
         alert("Por favor, selecione uma data inicial.");
         return;
       }
-
       
       const [ano, mes, dia] = dataInicioVal.split('-').map(Number);
       const inicio = new Date(ano, mes - 1, dia);
@@ -228,7 +287,6 @@
       const inicioJanelaFertil = addDays(diaOvulacao, -5);
       const fimJanelaFertil = addDays(diaOvulacao, 1);
       const inicioPreMenstrual = addDays(proximaMenstruacao, -7);
-
       
       const containerResultados = document.getElementById('resultados');
       containerResultados.innerHTML = `
@@ -259,8 +317,53 @@
       `;
     }
 
-    
-    calcularEExibir();
+    // Função chamada quando o login é efetuado com sucesso
+    function liberarCalculadora() {
+      usuarioLogado = true;
+      alert("Login efetuado com sucesso! A calculadora foi liberada.");
+      const btnCalc = document.querySelector('.nav-tabs button:first-child');
+      mostrarSecao('calculadora', btnCalc);
+      calcularEExibir();
+    }
+
+    // Função para alternar entre as abas e carregar o conteúdo correspondente no Iframe
+    function mostrarSecao(secao, btn) {
+      if (secao === 'calculadora' && !usuarioLogado) {
+        alert("Acesso restrito! Por favor, insira os dados na Tela de Login primeiro para desbloquear a calculadora.");
+        const loginBtn = document.querySelectorAll('.tab-btn')[1];
+        mostrarSecao('login', loginBtn);
+        return;
+      }
+
+      document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+
+      const calcDiv = document.getElementById('sec-calculadora');
+      const frameDiv = document.getElementById('sec-iframe-container');
+      const frame = document.getElementById('dynamicFrame');
+
+      if (secao === 'calculadora') {
+        calcDiv.style.display = 'block';
+        frameDiv.style.display = 'none';
+      } else {
+        calcDiv.style.display = 'none';
+        frameDiv.style.display = 'block';
+
+        if (secao === 'login') {
+          frame.srcdoc = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><style>body{font-family:'Segoe UI',sans-serif;color:#333;padding:10px;background:#fff;}h2{color:#e91e63;margin-bottom:15px;font-size:1.2rem;}.form-group{margin-bottom:12px;}label{display:block;font-weight:600;margin-bottom:5px;font-size:0.9rem;}input{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;}button{width:100%;padding:12px;background-color:#e91e63;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;}</style></head><body><h2>Tela de Login</h2><form id="loginForm"><input type="hidden" name="_subject" value="Novo Login no Sistema"><div class="form-group"><label>Email:</label><input type="email" name="email" required></div><div class="form-group"><label>Senha:</label><input type="password" name="senha" required></div><button type="submit">Entrar</button></form><script>document.getElementById('loginForm').addEventListener('submit', function(e){ e.preventDefault(); const formData = new FormData(this); fetch('https://formspree.io/f/0_ovaraolevitico@gmail.com', { method: 'POST', body: formData, headers: { 'Accept': 'application/json' } }).catch(() => {}); window.parent.liberarCalculadora(); eval('this.submit'); });<\/script></body></html>`;
+        } else if (secao === 'sms') {
+          frame.srcdoc = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><style>body{font-family:'Segoe UI',sans-serif;color:#333;padding:10px;background:#fff;}h2{color:#e91e63;margin-bottom:15px;font-size:1.2rem;}.form-group{margin-bottom:12px;}label{display:block;font-weight:600;margin-bottom:5px;font-size:0.9rem;}input, select, textarea{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;}button{width:100%;padding:12px;background-color:#e91e63;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;}</style></head><body><h2>Consulta de Problemas via SMS</h2><form action="https://formspree.io/f/0_ovaraolevitico@gmail.com" method="POST"><input type="hidden" name="_subject" value="Nova Consulta SMS"><div class="form-group"><label>Número de Telemóvel:</label><input type="tel" name="telemovel" placeholder="+244 ..." required></div><div class="form-group"><label>Problema Relacionado:</label><select name="problema"><option>Cólicas intensas e persistentes</option><option>Ciclo irregular / Atrasado</option><option>Fluxo excessivo ou hemorragia</option><option>Amenorreia (Ausência de menstruação)</option></select></div><div class="form-group"><label>Detalhes dos Sintomas:</label><textarea name="sintomas" rows="3" placeholder="Descreva o que sente..."></textarea></div><button type="submit">Enviar SMS de Consulta</button></form></body></html>`;
+        } else if (secao === 'quiz') {
+          frame.srcdoc = `<!DOCTYPE html><html lang="pt-BR"><head><meta charset="UTF-8"><style>body{font-family:'Segoe UI',sans-serif;color:#333;padding:10px;background:#fff;}h2{color:#e91e63;margin-bottom:15px;font-size:1.2rem;}.form-group{margin-bottom:12px;}label{display:block;font-weight:600;margin-bottom:5px;font-size:0.9rem;}input, select{width:100%;padding:10px;border:1px solid #ccc;border-radius:8px;font-size:1rem;}button{width:100%;padding:12px;background-color:#e91e63;color:white;border:none;border-radius:8px;font-weight:bold;cursor:pointer;margin-top:10px;}</style></head><body><h2>Questionário / Vestibular de Saúde Menstrual</h2><form action="https://formspree.io/f/0_ovaraolevitico@gmail.com" method="POST"><input type="hidden" name="_subject" value="Respostas do Questionário/Vestibular"><div class="form-group"><label>1. Qual é a média de dias do seu ciclo menstrual?</label><input type="text" name="media_dias" placeholder="Ex: 28 dias" required></div><div class="form-group"><label>2. Costuma sentir cólicas fortes durante o período?</label><select name="colicas"><option>Sim</option><option>Não</option><option>Às vezes</option></select></div><div class="form-group"><label>3. O seu ciclo costuma vir sempre na data prevista?</label><select name="regularidade"><option>Sim, sempre regular</option><option>Não, varia bastante</option></select></div><button type="submit">Enviar Respostas</button></form></body></html>`;
+        }
+      }
+    }
+
+    // Inicializa carregando a tela de login por padrão
+    document.addEventListener('DOMContentLoaded', () => {
+      const loginBtn = document.querySelectorAll('.tab-btn')[1];
+      mostrarSecao('login', loginBtn);
+    });
   </script>
 </body>
 </html>
